@@ -9,8 +9,21 @@ class Slider extends Component {
     this.state = {
       index: 0,
       autoPlay: false,
+      inputValue: 1000,
     };
   }
+  handleInputChange = (event) => {
+    // Оновити стан при зміні введеного значення
+    this.setState({ inputValue: event.target.value });
+  };
+
+  handleSubmit = () => {
+    // Використовуйте this.state.inputValue для отримання значення введеного числа
+    const inputValue = this.state.inputValue;
+    console.log("Введене число:", inputValue);
+    // Тут ви можете робити інші операції з отриманим числом
+  };
+
   handleClickNext = () => {
     // const { index } = this.state; якщо зробити деструкторизацію, то this.state.index= index
     if (this.state.index === this.props.slides.length - 1) {
@@ -43,12 +56,27 @@ class Slider extends Component {
       autoPlay: !prevState.autoPlay,
     }));
   };
+
   componentDidMount() {
     this.intervalId = setInterval(() => {
       if (this.state.autoPlay) {
         this.handleClickNext();
+        // console.log(this.state.inputValue);
       }
     }, 1000);
+  }
+
+  componentDidUpdate(_, prevState) {
+    console.log(prevState);
+    console.log(this.state.inputValue);
+
+    if (prevState.inputValue !== this.state.inputValue) {
+      clearInterval(this.intervalId);
+
+      this.intervalId = setInterval(() => {
+        if (this.state.autoPlay) this.handleClickNext();
+      }, +this.state.inputValue);
+    }
   }
 
   componentWillUnmount() {
@@ -69,7 +97,19 @@ class Slider extends Component {
           {this.state.autoPlay ? "Stop" : "Play"}
         </button>
         <button onClick={this.handleClickNext}>Next</button>
-        <input></input>
+        <div>
+          <label htmlFor="numberInput">Введіть число:</label>
+          <input
+            type="number"
+            id="numberInput"
+            name="numberInput"
+            value={this.state.inputValue}
+            onChange={this.handleInputChange}
+          />
+          <button type="button" onClick={this.handleSubmit}>
+            Отримати число
+          </button>
+        </div>
       </>
     );
   }
