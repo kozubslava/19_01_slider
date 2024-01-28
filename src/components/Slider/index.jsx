@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Slide from "../Slide";
-// import "./style.css"
-
+import style from "./slider.module.scss";
 class Slider extends Component {
   constructor(props) {
     super(props);
@@ -13,19 +12,14 @@ class Slider extends Component {
     };
   }
   handleInputChange = (event) => {
-    // Оновити стан при зміні введеного значення
     this.setState({ inputValue: event.target.value });
   };
 
   handleSubmit = () => {
-    // Використовуйте this.state.inputValue для отримання значення введеного числа
     const inputValue = this.state.inputValue;
-    console.log("Введене число:", inputValue);
-    // Тут ви можете робити інші операції з отриманим числом
   };
 
   handleClickNext = () => {
-    // const { index } = this.state; якщо зробити деструкторизацію, то this.state.index= index
     if (this.state.index === this.props.slides.length - 1) {
       this.setState({
         index: 0,
@@ -61,7 +55,6 @@ class Slider extends Component {
     this.intervalId = setInterval(() => {
       if (this.state.autoPlay) {
         this.handleClickNext();
-        // console.log(this.state.inputValue);
       }
     }, 1000);
   }
@@ -92,23 +85,22 @@ class Slider extends Component {
           image={slides[this.state.index].image}
           description={slides[this.state.index].description}
         />
-        <button onClick={this.handleClickPrev}>Previous</button>
-        <button onClick={this.handleAutoPlay}>
-          {this.state.autoPlay ? "Stop" : "Play"}
-        </button>
-        <button onClick={this.handleClickNext}>Next</button>
-        <div>
-          <label htmlFor="numberInput">Введіть число:</label>
-          <input
-            type="number"
-            id="numberInput"
-            name="numberInput"
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-          />
-          <button type="button" onClick={this.handleSubmit}>
-            Отримати число
+        <div className={style.controlsСontainer}>
+          <button onClick={this.handleClickPrev}>Previous</button>
+          <button onClick={this.handleAutoPlay}>
+            {this.state.autoPlay ? "Stop" : "Play"}
           </button>
+          <button onClick={this.handleClickNext}>Next</button>
+          <div>
+            <label htmlFor="numberInput">Interval</label>
+            <input
+              type="number"
+              id="numberInput"
+              name="numberInput"
+              value={this.state.inputValue}
+              onChange={this.handleInputChange}
+            />
+          </div>
         </div>
       </>
     );
