@@ -60,12 +60,11 @@ class Slider extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    console.log(prevState);
-    console.log(this.state.inputValue);
-
     if (prevState.inputValue !== this.state.inputValue) {
       clearInterval(this.intervalId);
-
+      if (this.state.inputValue < 1000) {
+        this.state.autoPlay = false;
+      }
       this.intervalId = setInterval(() => {
         if (this.state.autoPlay) this.handleClickNext();
       }, +this.state.inputValue);
